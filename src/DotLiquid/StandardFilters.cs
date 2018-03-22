@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using DotLiquid.Util;
+using System.Text;
 
 namespace DotLiquid
 {
@@ -128,6 +129,88 @@ namespace DotLiquid
             {
                 return input;
             }
+        }
+
+        /// <summary>
+        /// escape chars which can make problem to json
+        /// </summary>
+        /// <param name="input">String to escape</param>
+        /// <returns>Escaped string</returns>
+        public static string Escape_json(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            try
+            {
+                return cleanForJSON(input);
+            }
+            catch
+            {
+                return input;
+            }
+        }
+
+        private static string cleanForJSON(string s)
+        {
+            if (s == null || s.Length == 0)
+            {
+                return "";
+            }
+
+            int len = s.Length;
+            StringBuilder sb = new StringBuilder(len + 4);
+            String t;
+
+            foreach(char c in s)
+            {
+
+                switch (c)
+                {
+                    case '\\':
+                    case '"':
+                    case '/':
+                        sb.Append('\\');
+                        sb.Append(c);
+                        break;
+
+                    case '\b':
+                        sb.Append("\\b");
+                        break;
+
+                    case '\t':
+                        sb.Append("\\t");
+                        break;
+
+                    case '\n':
+                        sb.Append("\\n");
+                        break;
+
+                    case '\f':
+                        sb.Append("\\f");
+                        break;
+
+                    case '\r':
+                        sb.Append("\\r");
+                        break;
+
+                    default:
+                        if (c < ' ')
+                        {
+                            t = "000" + String.Format("X", c);
+                            sb.Append("\\u" + t.Substring(t.Length - 4));
+                        }
+                        else
+                        {
+                            sb.Append(c);
+                        }
+                        break;
+
+                }
+            }
+
+            return sb.ToString();
+
         }
 
         /// <summary>

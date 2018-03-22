@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace DotLiquid.NamingConventions
 {
@@ -11,7 +11,14 @@ namespace DotLiquid.NamingConventions
 
         public string GetMemberName(string name)
         {
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                name = name[0].ToString().ToUpper() + name.Substring(1);
+            }
+
             return name;
+
         }
 
         public bool OperatorEquals(string testedOperator, string referenceOperator)
