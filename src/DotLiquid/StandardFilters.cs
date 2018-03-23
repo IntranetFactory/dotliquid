@@ -138,21 +138,17 @@ namespace DotLiquid
         /// <returns>Escaped string</returns>
         public static string Escape_json(string input)
         {
+
             if (string.IsNullOrEmpty(input))
                 return input;
 
-            try
-            {
-                return cleanForJSON(input);
-            }
-            catch
-            {
-                return input;
-            }
+            return cleanForJSON(input);
+
         }
 
         private static string cleanForJSON(string s)
         {
+
             if (s == null || s.Length == 0)
             {
                 return "";
