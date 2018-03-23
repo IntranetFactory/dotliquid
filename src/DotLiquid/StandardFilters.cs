@@ -132,7 +132,7 @@ namespace DotLiquid
         }
 
         /// <summary>
-        /// escape chars which can make problem to json
+        /// escape string values as defined in rfc4627 http://www.ietf.org/rfc/rfc4627.txt, chapter 2.5
         /// </summary>
         /// <param name="input">String to escape</param>
         /// <returns>Escaped string</returns>
