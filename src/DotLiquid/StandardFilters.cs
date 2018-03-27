@@ -136,7 +136,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input">String to escape</param>
         /// <returns>Escaped string</returns>
-        public static string Escape_json(string input)
+        public static string Json_escape(string input)
         {
 
             if (string.IsNullOrEmpty(input))
