@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -106,7 +106,12 @@ namespace DotLiquid
                 try
                 {
                     filterArgs.Insert(0, output);
-                    output = context.Invoke(filter.Name, filterArgs);
+                    string filterName = filter.Name;
+                    //if (!string.IsNullOrEmpty(filterName))
+                    //{
+                    //    filterName = filterName[0].ToString().ToUpper() + filterName.Substring(1);
+                    //}
+                    output = context.Invoke(filterName, filterArgs);
                 }
                 catch (FilterNotFoundException ex)
                 {

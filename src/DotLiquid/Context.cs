@@ -186,9 +186,11 @@ namespace DotLiquid
         /// <returns></returns>
         public object Invoke(string method, List<object> args)
         {
-            if (Strainer.RespondTo(method))
+            string methodName = method;
+            //string methodName = Template.NamingConvention.GetMemberName(method);
+            if (Strainer.RespondTo(methodName))
             {
-                return Strainer.Invoke(method, args);
+                return Strainer.Invoke(methodName, args);
             }
 
             return args.First();

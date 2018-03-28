@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using DotLiquid.Util;
+using System.Text;
 
 namespace DotLiquid
 {
@@ -129,6 +130,84 @@ namespace DotLiquid
             {
                 return input;
             }
+        }
+
+        /// <summary>
+        /// escape string values as defined in rfc4627 http://www.ietf.org/rfc/rfc4627.txt, chapter 2.5
+        /// </summary>
+        /// <param name="input">String to escape</param>
+        /// <returns>Escaped string</returns>
+        public static string Json_escape(string input)
+        {
+
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            return cleanForJSON(input);
+ 
+        }
+
+        private static string cleanForJSON(string s)
+        {
+
+            if (s == null || s.Length == 0)
+            {
+                return "";
+            }
+
+            int len = s.Length;
+            StringBuilder sb = new StringBuilder(len + 4);
+            String t;
+
+            foreach (char c in s)
+            {
+
+                switch (c)
+                {
+                    case '\\':
+                    case '"':
+                    case '/':
+                        sb.Append('\\');
+                        sb.Append(c);
+                        break;
+
+                    case '\b':
+                        sb.Append("\\b");
+                        break;
+
+                    case '\t':
+                        sb.Append("\\t");
+                        break;
+
+                    case '\n':
+                        sb.Append("\\n");
+                        break;
+
+                    case '\f':
+                        sb.Append("\\f");
+                        break;
+
+                    case '\r':
+                        sb.Append("\\r");
+                        break;
+
+                    default:
+                        if (c < ' ')
+                        {
+                            t = "000" + String.Format("X", c);
+                            sb.Append("\\u" + t.Substring(t.Length - 4));
+                        }
+                        else
+                        {
+                            sb.Append(c);
+                        }
+                        break;
+
+                }
+            }
+
+            return sb.ToString();
+
         }
 
         /// <summary>

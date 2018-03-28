@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace DotLiquid.NamingConventions
 {
@@ -11,13 +11,26 @@ namespace DotLiquid.NamingConventions
 
         public string GetMemberName(string name)
         {
+
+            //if (!string.IsNullOrEmpty(name))
+            //{
+            //    name = name[0].ToString().ToUpper() + name.Substring(1); //first letter uppercase other lowercase
+            //}
+
             return name;
+
         }
 
         public bool OperatorEquals(string testedOperator, string referenceOperator)
         {
-            return UpperFirstLetter(testedOperator).Equals(referenceOperator)
-                    || LowerFirstLetter(testedOperator).Equals(referenceOperator);
+
+            //return UpperFirstLetter(testedOperator).Equals(referenceOperator)
+            //|| LowerFirstLetter(testedOperator).Equals(referenceOperator);
+
+            //return GetMemberName(testedOperator).Equals(referenceOperator);
+
+            return testedOperator.ToLower().Equals(referenceOperator);
+
         }
 
         private static string UpperFirstLetter(string word)
