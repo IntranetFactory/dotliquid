@@ -16,7 +16,7 @@ namespace DotLiquid.Tests
 
         private static class TestFilters
         {
-            public static string Hi(string output)
+            public static string hi(string output)
             {
                 return output + " hi!";
             }
@@ -24,7 +24,7 @@ namespace DotLiquid.Tests
 
         private static class TestContextFilters
         {
-            public static string Hi(Context context, string output)
+            public static string hi(Context context, string output)
             {
                 return output + " hi from " + context["name"] + "!";
             }
@@ -32,7 +32,7 @@ namespace DotLiquid.Tests
 
         private static class GlobalFilters
         {
-            public static string Notice(string output)
+            public static string notice(string output)
             {
                 return "Global " + output;
             }
@@ -40,7 +40,7 @@ namespace DotLiquid.Tests
 
         private static class LocalFilters
         {
-            public static string Notice(string output)
+            public static string notice(string output)
             {
                 return "Local " + output;
             }
@@ -56,12 +56,12 @@ namespace DotLiquid.Tests
 
         private class CentsDrop : Drop
         {
-            public object Amount
+            public object amount
             {
                 get { return new HundredCents(); }
             }
 
-            public bool NonZero
+            public bool non_zero
             {
                 get { return true; }
             }
@@ -69,7 +69,7 @@ namespace DotLiquid.Tests
 
         private class ContextSensitiveDrop : Drop
         {
-            public object Test()
+            public object test()
             {
                 return Context["test"];
             }

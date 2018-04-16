@@ -22,7 +22,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static int Size(object input)
+        public static int size(object input)
         {
             if (input is string stringInput)
             {
@@ -42,7 +42,7 @@ namespace DotLiquid
         /// <param name="start"></param>
         /// <param name="len"></param>
         /// <returns></returns>
-        public static string Slice(string input, int start, int len = 1)
+        public static string slice(string input, int start, int len = 1)
         {
             if (input == null || start > input.Length)
                 return null;
@@ -63,7 +63,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Downcase(string input)
+        public static string downcase(string input)
         {
             return input == null ? input : input.ToLower();
         }
@@ -73,7 +73,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Upcase(string input)
+        public static string upcase(string input)
         {
             return input == null
                 ? input
@@ -85,7 +85,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string UrlEncode(string input)
+        public static string url_encode(string input)
         {
             return input == null
                 ? input
@@ -97,7 +97,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Capitalize(string input)
+        public static string capitalize(string input)
         {
             if (input.IsNullOrWhiteSpace())
                 return input;
@@ -117,7 +117,7 @@ namespace DotLiquid
         /// <param name="input">String to escape</param>
         /// <returns>Escaped string</returns>
         /// <remarks>Alias of H</remarks>
-        public static string Escape(string input)
+        public static string escape(string input)
         {
             if (string.IsNullOrEmpty(input))
                 return input;
@@ -137,7 +137,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input">String to escape</param>
         /// <returns>Escaped string</returns>
-        public static string Json_escape(string input)
+        public static string json_escape(string input)
         {
 
             if (string.IsNullOrEmpty(input))
@@ -216,9 +216,9 @@ namespace DotLiquid
         /// <param name="input">String to escape</param>
         /// <returns>Escaped string</returns>
         /// <remarks>Alias of Escape</remarks>
-        public static string H(string input)
+        public static string h(string input)
         {
-            return Escape(input);
+            return escape(input);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace DotLiquid
         /// <param name="length"></param>
         /// <param name="truncateString"></param>
         /// <returns></returns>
-        public static string Truncate(string input, int length = 50, string truncateString = "...")
+        public static string truncate(string input, int length = 50, string truncateString = "...")
         {
             if (string.IsNullOrEmpty(input))
                 return input;
@@ -247,7 +247,7 @@ namespace DotLiquid
         /// <param name="words"></param>
         /// <param name="truncateString"></param>
         /// <returns></returns>
-        public static string TruncateWords(string input, int words = 15, string truncateString = "...")
+        public static string truncate_words(string input, int words = 15, string truncateString = "...")
         {
             if (string.IsNullOrEmpty(input))
                 return input;
@@ -266,7 +266,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="pattern"></param>
         /// <returns></returns>
-        public static string[] Split(string input, string pattern)
+        public static string[] split(string input, string pattern)
         {
             return input.IsNullOrWhiteSpace()
                 ? new[] { input }
@@ -278,7 +278,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string StripHtml(string input)
+        public static string strip_html(string input)
         {
             return input.IsNullOrWhiteSpace()
                 ? input
@@ -290,7 +290,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Strip(string input)
+        public static string strip(string input)
         {
             return input?.Trim();
         }
@@ -300,7 +300,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Lstrip(string input)
+        public static string lstrip(string input)
         {
             return input?.TrimStart();
         }
@@ -310,7 +310,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Rstrip(string input)
+        public static string rstrip(string input)
         {
             return input?.TrimEnd();
         }
@@ -321,7 +321,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static string Currency(object input, string cultureInfo = null)
+        public static string currency(object input, string cultureInfo = null)
         {
 
             if (decimal.TryParse(input.ToString(), out decimal amount))
@@ -344,7 +344,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string StripNewlines(string input)
+        public static string strip_newlines(string input)
         {
             return input.IsNullOrWhiteSpace()
                 ? input
@@ -357,7 +357,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="glue"></param>
         /// <returns></returns>
-        public static string Join(IEnumerable input, string glue = " ")
+        public static string join(IEnumerable input, string glue = " ")
         {
             if (input == null)
                 return null;
@@ -374,7 +374,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="property"></param>
         /// <returns></returns>
-        public static IEnumerable Sort(object input, string property = null)
+        public static IEnumerable sort(object input, string property = null)
         {
             if (input == null)
                 return null;
@@ -414,7 +414,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="property"></param>
         /// <returns></returns>
-        public static IEnumerable Map(IEnumerable input, string property)
+        public static IEnumerable map(IEnumerable input, string property)
         {
             if (input == null)
                 return null;
@@ -461,7 +461,7 @@ namespace DotLiquid
         /// <param name="string"></param>
         /// <param name="replacement"></param>
         /// <returns></returns>
-        public static string Replace(string input, string @string, string replacement = "")
+        public static string replace(string input, string @string, string replacement = "")
         {
             if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(@string))
                 return input;
@@ -478,7 +478,7 @@ namespace DotLiquid
         /// <param name="string"></param>
         /// <param name="replacement"></param>
         /// <returns></returns>
-        public static string ReplaceFirst(string input, string @string, string replacement = "")
+        public static string replace_first(string input, string @string, string replacement = "")
         {
             if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(@string))
                 return input;
@@ -500,7 +500,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="string"></param>
         /// <returns></returns>
-        public static string Remove(string input, string @string)
+        public static string remove(string input, string @string)
         {
             return input.IsNullOrWhiteSpace()
                 ? input
@@ -513,11 +513,11 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="string"></param>
         /// <returns></returns>
-        public static string RemoveFirst(string input, string @string)
+        public static string remove_first(string input, string @string)
         {
             return input.IsNullOrWhiteSpace()
                 ? input
-                : ReplaceFirst(input, @string, string.Empty);
+                : replace_first(input, @string, string.Empty);
         }
 
         /// <summary>
@@ -526,7 +526,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="string"></param>
         /// <returns></returns>
-        public static string Append(string input, string @string)
+        public static string append(string input, string @string)
         {
             return input == null
                 ? input
@@ -539,7 +539,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="string"></param>
         /// <returns></returns>
-        public static string Prepend(string input, string @string)
+        public static string prepend(string input, string @string)
         {
             return input == null
                 ? input
@@ -551,7 +551,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string NewlineToBr(string input)
+        public static string newline_to_br(string input)
         {
             return input.IsNullOrWhiteSpace()
                     ? input
@@ -564,7 +564,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="format"></param>
         /// <returns></returns>
-        public static string Date(object input, string format)
+        public static string date(object input, string format)
         {
             if (input == null)
                 return null;
@@ -608,7 +608,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
-        public static object First(IEnumerable array)
+        public static object first(IEnumerable array)
         {
             if (array == null)
                 return null;
@@ -624,7 +624,7 @@ namespace DotLiquid
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
-        public static object Last(IEnumerable array)
+        public static object last(IEnumerable array)
         {
             if (array == null)
                 return null;
@@ -638,7 +638,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="operand"></param>
         /// <returns></returns>
-        public static object Plus(object input, object operand)
+        public static object plus(object input, object operand)
         {
             return input is string
                 ? string.Concat(input, operand)
@@ -651,7 +651,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="operand"></param>
         /// <returns></returns>
-        public static object Minus(object input, object operand)
+        public static object minus(object input, object operand)
         {
             return DoMathsOperation(input, operand, Expression.Subtract);
         }
@@ -662,7 +662,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="operand"></param>
         /// <returns></returns>
-        public static object Times(object input, object operand)
+        public static object times(object input, object operand)
         {
             return input is string && operand is int
                 ? Enumerable.Repeat((string)input, (int)operand)
@@ -675,7 +675,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="places"></param>
         /// <returns>The rounded value; null if an exception have occured</returns>
-        public static object Round(object input, object places = null)
+        public static object round(object input, object places = null)
         {
             try
             {
@@ -695,7 +695,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="operand"></param>
         /// <returns></returns>
-        public static object DividedBy(object input, object operand)
+        public static object divided_by(object input, object operand)
         {
             return DoMathsOperation(input, operand, Expression.Divide);
         }
@@ -706,7 +706,7 @@ namespace DotLiquid
         /// <param name="input"></param>
         /// <param name="operand"></param>
         /// <returns></returns>
-        public static object Modulo(object input, object operand)
+        public static object modulo(object input, object operand)
         {
             return DoMathsOperation(input, operand, Expression.Modulo);
         }

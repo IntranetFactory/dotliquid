@@ -23,17 +23,17 @@ namespace DotLiquid.Tests
 
         internal class ContextDrop : Drop
         {
-            public int Scopes
+            public int scopes
             {
                 get { return Context.Scopes.Count; }
             }
 
-            public IEnumerable<int> ScopesAsArray
+            public IEnumerable<int> scopes_as_array
             {
                 get { return Enumerable.Range(1, Context.Scopes.Count); }
             }
 
-            public int LoopPos
+            public int loop_pos
             {
                 get { return (int)Context["forloop.index"]; }
             }
@@ -53,12 +53,12 @@ namespace DotLiquid.Tests
         {
             internal class TextDrop : Drop
             {
-                public string[] Array
+                public string[] array
                 {
                     get { return new[] { "text1", "text2" }; }
                 }
 
-                public string Text
+                public string text
                 {
                     get { return "text1"; }
                 }
@@ -139,7 +139,7 @@ namespace DotLiquid.Tests
         {
             public static string ProductText(object input)
             {
-                return ((ProductDrop)input).Texts().Text;
+                return ((ProductDrop)input).Texts().text;
             }
         }
 

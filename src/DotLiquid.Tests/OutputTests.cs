@@ -10,32 +10,32 @@ namespace DotLiquid.Tests
     {
         private static class FunnyFilter
         {
-            public static string MakeFunny(string input)
+            public static string make_funny(string input)
             {
                 return "LOL";
             }
 
-            public static string CiteFunny(string input)
+            public static string cite_funny(string input)
             {
                 return "LOL: " + input;
             }
 
-            public static string AddSmiley(string input, string smiley = ":-)")
+            public static string add_smiley(string input, string smiley = ":-)")
             {
                 return input + " " + smiley;
             }
 
-            public static string AddTag(string input, string tag = "p", string id = "foo")
+            public static string add_tag(string input, string tag = "p", string id = "foo")
             {
                 return string.Format("<{0} id=\"{1}\">{2}</{0}>", tag, id, input);
             }
 
-            public static string Paragraph(string input)
+            public static string paragraph(string input)
             {
                 return string.Format("<p>{0}</p>", input);
             }
 
-            public static string LinkTo(string name, string url)
+            public static string link_to(string name, string url)
             {
                 return string.Format("<a href=\"{0}\">{1}</a>", url, name);
             }

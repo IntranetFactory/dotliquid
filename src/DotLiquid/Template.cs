@@ -56,7 +56,8 @@ namespace DotLiquid
         static Template()
         {
             RegexTimeOut = TimeSpan.FromSeconds(10);
-            NamingConvention = new RubyNamingConvention();
+            //NamingConvention = new RubyNamingConvention();
+            NamingConvention = new CSharpNamingConvention();
             FileSystem = new BlankFileSystem();
             Tags = new Dictionary<string, Tuple<ITagFactory, Type>>();
             SafeTypeTransformers = new Dictionary<Type, Func<object, object>>();

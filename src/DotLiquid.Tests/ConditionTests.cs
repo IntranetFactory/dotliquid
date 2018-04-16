@@ -222,34 +222,34 @@ namespace DotLiquid.Tests
         {
             try
             {
-                Condition.Operators["IsMultipleOf"] =
+                Condition.Operators["is_multiple_of"] =
                     (left, right) => (int)left % (int)right == 0;
 
                 // exact match
-                AssertEvaluatesTrue("16", "IsMultipleOf", "4");
-                AssertEvaluatesFalse("16", "IsMultipleOf", "5");
+                AssertEvaluatesTrue("16", "is_multiple_of", "4");
+                AssertEvaluatesFalse("16", "is_multiple_of", "5");
 
                 // lower case: compatibility
-                AssertEvaluatesTrue("16", "ismultipleof", "4");
-                AssertEvaluatesFalse("16", "ismultipleof", "5");
+                AssertEvaluatesTrue("16", "is_multiple_of", "4");
+                AssertEvaluatesFalse("16", "is_multiple_of", "5");
 
                 AssertEvaluatesTrue("16", "is_multiple_of", "4");
                 AssertEvaluatesFalse("16", "is_multiple_of", "5");
 
-                AssertError("16", "isMultipleOf", "4", typeof(ArgumentException));
+                AssertError("16", "is_multiple_of", "4", typeof(ArgumentException));
 
                 //Run tests through the template to verify that capitalization rules are followed through template parsing
-                Helper.AssertTemplateResult(" TRUE ", "{% if 16 IsMultipleOf 4 %} TRUE {% endif %}");
-                Helper.AssertTemplateResult("", "{% if 14 IsMultipleOf 4 %} TRUE {% endif %}");
-                Helper.AssertTemplateResult(" TRUE ", "{% if 16 ismultipleof 4 %} TRUE {% endif %}");
-                Helper.AssertTemplateResult("", "{% if 14 ismultipleof 4 %} TRUE {% endif %}");
                 Helper.AssertTemplateResult(" TRUE ", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
                 Helper.AssertTemplateResult("", "{% if 14 is_multiple_of 4 %} TRUE {% endif %}");
-                Helper.AssertTemplateResult("Liquid error: Unknown operator isMultipleOf", "{% if 16 isMultipleOf 4 %} TRUE {% endif %}");
+                Helper.AssertTemplateResult(" TRUE ", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
+                Helper.AssertTemplateResult("", "{% if 14 is_multiple_of 4 %} TRUE {% endif %}");
+                Helper.AssertTemplateResult(" TRUE ", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
+                Helper.AssertTemplateResult("", "{% if 14 is_multiple_of 4 %} TRUE {% endif %}");
+                Helper.AssertTemplateResult("Liquid error: Unknown operator is_multiple_of", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
             }
             finally
             {
-                Condition.Operators.Remove("IsMultipleOf");
+                Condition.Operators.Remove("is_multiple_of");
             }
         }
 

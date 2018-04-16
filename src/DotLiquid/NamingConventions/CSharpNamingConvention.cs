@@ -16,7 +16,10 @@ namespace DotLiquid.NamingConventions
             //{
             //    name = name[0].ToString().ToUpper() + name.Substring(1); //first letter uppercase other lowercase
             //}
-
+            if (name == "default")
+            {
+                name = "Default";
+            }
             return name;
 
         }
@@ -24,12 +27,12 @@ namespace DotLiquid.NamingConventions
         public bool OperatorEquals(string testedOperator, string referenceOperator)
         {
 
-            //return UpperFirstLetter(testedOperator).Equals(referenceOperator)
-            //|| LowerFirstLetter(testedOperator).Equals(referenceOperator);
+            return UpperFirstLetter(testedOperator).Equals(referenceOperator)
+            || LowerFirstLetter(testedOperator).Equals(referenceOperator);
 
             //return GetMemberName(testedOperator).Equals(referenceOperator);
 
-            return testedOperator.ToLower().Equals(referenceOperator);
+            //return testedOperator.ToLower().Equals(referenceOperator.ToLower());
 
         }
 
