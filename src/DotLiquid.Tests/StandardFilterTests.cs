@@ -52,8 +52,27 @@ namespace DotLiquid.Tests
         }
 
         [Test]
-        public void TestJsonEscape()
+        public void TestEscape_CSharpNamingConvention()
         {
+            Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+            Helper.AssertTemplateResult("a\\r\\nb\\r\\nc",
+                "{{ source | escape }}",
+                Hash.FromAnonymousObject(new { source = "a\r\nb\r\nc" }));
+        }
+
+        [Test]
+        public void TestJsonEscape_RubyNamingConvention()
+        {
+            Template.NamingConvention = new NamingConventions.RubyNamingConvention();
+            Helper.AssertTemplateResult("a\\r\\nb\\r\\nc",
+                "{{ source | json_escape }}",
+                Hash.FromAnonymousObject(new { source = "a\r\nb\r\nc" }));
+        }
+
+        [Test]
+        public void TestJsonEscape_CSharpNamingConvention()
+        {
+            Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
             Helper.AssertTemplateResult("a\\r\\nb\\r\\nc",
                 "{{ source | json_escape }}",
                 Hash.FromAnonymousObject(new { source = "a\r\nb\r\nc" }));
@@ -71,12 +90,22 @@ namespace DotLiquid.Tests
         public void TestCSharpNamingConventionProblem()
         {
 
-            Template template = Template.Parse("1{{testValue}}2");
-            //Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
             //Template.NamingConvention = new NamingConventions.RubyNamingConvention();
+            //Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+            Template template = Template.Parse("1{{testValue}}2");
             Assert.AreEqual("1abc2", template.Render(Hash.FromAnonymousObject(new { testValue = "abc" })));
 
         }
+
+        //[Test]
+        //public void TestCSharpNamingConventionProblemWithJsonEscape()
+        //{//this don't add filters, so json_escape cannot be tested in 'Render' call such this one
+
+        //    Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+        //    Template template = Template.Parse("1{{testValue}}2 | json_escape");
+        //    Assert.AreEqual("1abc2", template.Render(Hash.FromAnonymousObject(new { testValue = @"a""bc" })));
+
+        //}
 
         [Test]
         public void TestTruncateWords()
@@ -242,12 +271,12 @@ namespace DotLiquid.Tests
             Assert.AreEqual(expected, StandardFilters.Currency(input));
         }
 
-        [TestCase("6.72", "6,72 â‚¬")]
-        [TestCase("6000", "6.000,00 â‚¬")]
-        [TestCase("6000000", "6.000.000,00 â‚¬")]
-        [TestCase("6000.4", "6.000,40 â‚¬")]
-        [TestCase("6000000.4", "6.000.000,40 â‚¬")]
-        [TestCase("6.8458", "6,85 â‚¬")]
+        [TestCase("6.72", "6,72 Ã¢â€šÂ¬")]
+        [TestCase("6000", "6.000,00 Ã¢â€šÂ¬")]
+        [TestCase("6000000", "6.000.000,00 Ã¢â€šÂ¬")]
+        [TestCase("6000.4", "6.000,40 Ã¢â€šÂ¬")]
+        [TestCase("6000000.4", "6.000.000,40 Ã¢â€šÂ¬")]
+        [TestCase("6.8458", "6,85 Ã¢â€šÂ¬")]
         public void TestEuroCurrencyFromString(string input, string expected)
         {
 #if CORE
@@ -277,7 +306,7 @@ namespace DotLiquid.Tests
             Template euroTemplate = Template.Parse(@"{{ amount | currency: ""de-DE"" }}");
 
             Assert.AreEqual("$7,000.00", dollarTemplate.Render(Hash.FromAnonymousObject(new { amount = "7000" })));
-            Assert.AreEqual("7.000,00 â‚¬", euroTemplate.Render(Hash.FromAnonymousObject(new { amount = 7000 })));
+            Assert.AreEqual("7.000,00 Ã¢â€šÂ¬", euroTemplate.Render(Hash.FromAnonymousObject(new { amount = 7000 })));
         }
 
         [Test]
@@ -285,8 +314,8 @@ namespace DotLiquid.Tests
         {
             Assert.AreEqual("$6.85", StandardFilters.Currency(6.8458, "en-US"));
             Assert.AreEqual("$6.72", StandardFilters.Currency(6.72, "en-CA"));
-            Assert.AreEqual("6.000.000,00 â‚¬", StandardFilters.Currency(6000000, "de-DE"));
-            Assert.AreEqual("6.000.000,78 â‚¬", StandardFilters.Currency(6000000.78, "de-DE"));
+            Assert.AreEqual("6.000.000,00 Ã¢â€šÂ¬", StandardFilters.Currency(6000000, "de-DE"));
+            Assert.AreEqual("6.000.000,78 Ã¢â€šÂ¬", StandardFilters.Currency(6000000.78, "de-DE"));
         }
 
         [Test]
