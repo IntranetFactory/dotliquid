@@ -1,0 +1,143 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>DotLiquid is a templating system ported to the .NET framework from Ruby’s Liquid Markup.</Description>
+    <AssemblyTitle>DotLiquid</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Authors>Tim Jones;Alessandro Petrelli</Authors>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <AssemblyName>DotLiquid</AssemblyName>
+    <AssemblyOriginatorKeyFile>../Formosatek-OpenSource.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PackageId>DotLiquid</PackageId>
+    <PackageTags>template;templating;language;liquid;markup</PackageTags>
+    <PackageIconUrl>https://github.com/formosatek/dotliquid/raw/master/build/logo_nuget.png</PackageIconUrl>
+    <PackageProjectUrl>http://dotliquidmarkup.org</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/dotliquid/dotliquid</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+    <DocumentationFile>net45\bin\Debug\DotLiquid.xml</DocumentationFile>
+	<BaseIntermediateOutputPath>net45\obj\</BaseIntermediateOutputPath>
+	<OutputPath>net45\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Common\Code\ActivatorTagFactory.cs" Link="ActivatorTagFactory.cs" />
+    <Compile Include="..\..\Common\Code\Block.cs" Link="Block.cs" />
+    <Compile Include="..\..\Common\Code\Condition.cs" Link="Condition.cs" />
+    <Compile Include="..\..\Common\Code\Context.cs" Link="Context.cs" />
+    <Compile Include="..\..\Common\Code\Document.cs" Link="Document.cs" />
+    <Compile Include="..\..\Common\Code\Drop.cs" Link="Drop.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\ArgumentException.cs" Link="Exceptions\ArgumentException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\ContextException.cs" Link="Exceptions\ContextException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\FileSystemException.cs" Link="Exceptions\FileSystemException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\FilterNotFoundException.cs" Link="Exceptions\FilterNotFoundException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\InterruptException.cs" Link="Exceptions\InterruptException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\LiquidException.cs" Link="Exceptions\LiquidException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\MaximumIterationsExceededException.cs" Link="Exceptions\MaximumIterationsExceededException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\RenderException.cs" Link="Exceptions\RenderException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\StackLevelException.cs" Link="Exceptions\StackLevelException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\SyntaxException.cs" Link="Exceptions\SyntaxException.cs" />
+    <Compile Include="..\..\Common\Code\Exceptions\VariableNotFoundException.cs" Link="Exceptions\VariableNotFoundException.cs" />
+    <Compile Include="..\..\Common\Code\FileSystems\BlankFileSystem.cs" Link="FileSystems\BlankFileSystem.cs" />
+    <Compile Include="..\..\Common\Code\FileSystems\EmbeddedFileSystem.cs" Link="FileSystems\EmbeddedFileSystem.cs" />
+    <Compile Include="..\..\Common\Code\FileSystems\IFileSystem.cs" Link="FileSystems\IFileSystem.cs" />
+    <Compile Include="..\..\Common\Code\FileSystems\ITemplateFileSystem.cs" Link="FileSystems\ITemplateFileSystem.cs" />
+    <Compile Include="..\..\Common\Code\FileSystems\LocalFileSystem.cs" Link="FileSystems\LocalFileSystem.cs" />
+    <Compile Include="..\..\Common\Code\Hash.cs" Link="Hash.cs" />
+    <Compile Include="..\..\Common\Code\IContextAware.cs" Link="IContextAware.cs" />
+    <Compile Include="..\..\Common\Code\IIndexable.cs" Link="IIndexable.cs" />
+    <Compile Include="..\..\Common\Code\ILiquidizable.cs" Link="ILiquidizable.cs" />
+    <Compile Include="..\..\Common\Code\IRenderable.cs" Link="IRenderable.cs" />
+    <Compile Include="..\..\Common\Code\ITagFactory.cs" Link="ITagFactory.cs" />
+    <Compile Include="..\..\Common\Code\IValueTypeConvertible.cs" Link="IValueTypeConvertible.cs" />
+    <Compile Include="..\..\Common\Code\Liquid.cs" Link="Liquid.cs" />
+    <Compile Include="..\..\Common\Code\LiquidTypeAttribute.cs" Link="LiquidTypeAttribute.cs" />
+    <Compile Include="..\..\Common\Code\NamingConventions\CSharpNamingConvention.cs" Link="NamingConventions\CSharpNamingConvention.cs" />
+    <Compile Include="..\..\Common\Code\NamingConventions\INamingConvention.cs" Link="NamingConventions\INamingConvention.cs" />
+    <Compile Include="..\..\Common\Code\NamingConventions\RubyNamingConvention.cs" Link="NamingConventions\RubyNamingConvention.cs" />
+    <Compile Include="..\..\Common\Code\Proc.cs" Link="Proc.cs" />
+    <Compile Include="..\..\Common\Code\RenderParameters.cs" Link="RenderParameters.cs" />
+    <Compile Include="..\..\Common\Code\StandardFilters.cs" Link="StandardFilters.cs" />
+    <Compile Include="..\..\Common\Code\Strainer.cs" Link="Strainer.cs" />
+    <Compile Include="..\..\Common\Code\Tag.cs" Link="Tag.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Assign.cs" Link="Tags\Assign.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Block.cs" Link="Tags\Block.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Break.cs" Link="Tags\Break.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Capture.cs" Link="Tags\Capture.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Case.cs" Link="Tags\Case.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Comment.cs" Link="Tags\Comment.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Continue.cs" Link="Tags\Continue.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Cycle.cs" Link="Tags\Cycle.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Extends.cs" Link="Tags\Extends.cs" />
+    <Compile Include="..\..\Common\Code\Tags\For.cs" Link="Tags\For.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Html\TableRow.cs" Link="Tags\Html\TableRow.cs" />
+    <Compile Include="..\..\Common\Code\Tags\If.cs" Link="Tags\If.cs" />
+    <Compile Include="..\..\Common\Code\Tags\IfChanged.cs" Link="Tags\IfChanged.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Include.cs" Link="Tags\Include.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Literal.cs" Link="Tags\Literal.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Raw.cs" Link="Tags\Raw.cs" />
+    <Compile Include="..\..\Common\Code\Tags\Unless.cs" Link="Tags\Unless.cs" />
+    <Compile Include="..\..\Common\Code\Template.cs" Link="Template.cs" />
+    <Compile Include="..\..\Common\Code\Util\EnumerableExtensionMethods.cs" Link="Util\EnumerableExtensionMethods.cs" />
+    <Compile Include="..\..\Common\Code\Util\ExpressionUtility.cs" Link="Util\ExpressionUtility.cs" />
+    <Compile Include="..\..\Common\Code\Util\ListExtensionMethods.cs" Link="Util\ListExtensionMethods.cs" />
+    <Compile Include="..\..\Common\Code\Util\ObjectExtensionMethods.cs" Link="Util\ObjectExtensionMethods.cs" />
+    <Compile Include="..\..\Common\Code\Util\R.cs" Link="Util\R.cs" />
+    <Compile Include="..\..\Common\Code\Util\Range.cs" Link="Util\Range.cs" />
+    <Compile Include="..\..\Common\Code\Util\StrFTime.cs" Link="Util\StrFTime.cs" />
+    <Compile Include="..\..\Common\Code\Util\Symbol.cs" Link="Util\Symbol.cs" />
+    <Compile Include="..\..\Common\Code\Util\TypeUtility.cs" Link="Util\TypeUtility.cs" />
+    <Compile Include="..\..\Common\Code\Util\WeakTable.cs" Link="Util\WeakTable.cs" />
+    <Compile Include="..\..\Common\Code\Variable.cs" Link="Variable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Resources.it.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.it.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="5.11.0.1761" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE.txt">
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FileSystems\" />
+    <Folder Include="NamingConventions\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Tags\Html\" />
+    <Folder Include="Util\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,102 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net451</TargetFrameworks>
+    <AssemblyName>DotLiquid.Tests</AssemblyName>
+    <AssemblyOriginatorKeyFile>../Formosatek-OpenSource.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PackageId>DotLiquid.Tests</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+	<BaseIntermediateOutputPath>net45\obj\</BaseIntermediateOutputPath>
+	<OutputPath>net45\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net451|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Common\Tests\BlockTests.cs" Link="BlockTests.cs" />
+    <Compile Include="..\..\Common\Tests\ConditionTests.cs" Link="ConditionTests.cs" />
+    <Compile Include="..\..\Common\Tests\ContextTests.cs" Link="ContextTests.cs" />
+    <Compile Include="..\..\Common\Tests\CultureHelper.cs" Link="CultureHelper.cs" />
+    <Compile Include="..\..\Common\Tests\CustomIndexableTests.cs" Link="CustomIndexableTests.cs" />
+    <Compile Include="..\..\Common\Tests\DropTests.cs" Link="DropTests.cs" />
+    <Compile Include="..\..\Common\Tests\ExceptionHandlingTests.cs" Link="ExceptionHandlingTests.cs" />
+    <Compile Include="..\..\Common\Tests\FileSystemTests.cs" Link="FileSystemTests.cs" />
+    <Compile Include="..\..\Common\Tests\FilterTests.cs" Link="FilterTests.cs" />
+    <Compile Include="..\..\Common\Tests\Framework\ExtendedCollectionAssert.cs" Link="Framework\ExtendedCollectionAssert.cs" />
+    <Compile Include="..\..\Common\Tests\FunctionFilterTests.cs" Link="FunctionFilterTests.cs" />
+    <Compile Include="..\..\Common\Tests\Helper.cs" Link="Helper.cs" />
+    <Compile Include="..\..\Common\Tests\LazyHashTest.cs" Link="LazyHashTest.cs" />
+    <Compile Include="..\..\Common\Tests\LiquidTypeAttributeTests.cs" Link="LiquidTypeAttributeTests.cs" />
+    <Compile Include="..\..\Common\Tests\NamingConventionTests.cs" Link="NamingConventionTests.cs" />
+    <Compile Include="..\..\Common\Tests\OutputTests.cs" Link="OutputTests.cs" />
+    <Compile Include="..\..\Common\Tests\ParallelTest.cs" Link="ParallelTest.cs" />
+    <Compile Include="..\..\Common\Tests\ParsingQuirksTests.cs" Link="ParsingQuirksTests.cs" />
+    <Compile Include="..\..\Common\Tests\RegexpTests.cs" Link="RegexpTests.cs" />
+    <Compile Include="..\..\Common\Tests\StandardFilterTests.cs" Link="StandardFilterTests.cs" />
+    <Compile Include="..\..\Common\Tests\StatementTests.cs" Link="StatementTests.cs" />
+    <Compile Include="..\..\Common\Tests\StudlyCapsTests.cs" Link="StudlyCapsTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\AssignTests.cs" Link="Tags\AssignTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\Html\TableRowTests.cs" Link="Tags\Html\TableRowTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\IfElseTests.cs" Link="Tags\IfElseTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\IncludeTagTests.cs" Link="Tags\IncludeTagTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\InheritanceTests.cs" Link="Tags\InheritanceTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\LiteralTests.cs" Link="Tags\LiteralTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\RawTests.cs" Link="Tags\RawTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\StandardTagTests.cs" Link="Tags\StandardTagTests.cs" />
+    <Compile Include="..\..\Common\Tests\Tags\UnlessElseTests.cs" Link="Tags\UnlessElseTests.cs" />
+    <Compile Include="..\..\Common\Tests\TemplateTests.cs" Link="TemplateTests.cs" />
+    <Compile Include="..\..\Common\Tests\Util\ListExtensionMethodsTests.cs" Link="Util\ListExtensionMethodsTests.cs" />
+    <Compile Include="..\..\Common\Tests\Util\StrFTimeTests.cs" Link="Util\StrFTimeTests.cs" />
+    <Compile Include="..\..\Common\Tests\VariableResolutionTests.cs" Link="VariableResolutionTests.cs" />
+    <Compile Include="..\..\Common\Tests\VariableTests.cs" Link="VariableTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="dotnet-test-nunit" Version="3.4.0-beta-3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.3.2.6129" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <Reference Include="System.Data" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotLiquid\DotLiquid.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Embedded\" />
+    <Folder Include="Framework\" />
+    <Folder Include="Tags\Html\" />
+    <Folder Include="Util\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Common\Tests\Embedded\_layout.liquid" Link="Embedded\_layout.liquid" />
+  </ItemGroup>
+
+</Project>
