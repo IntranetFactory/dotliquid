@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -6,6 +6,8 @@
     <AssemblyName>DotLiquid</AssemblyName>
 	<BaseIntermediateOutputPath>netcoreapp2.1\obj\</BaseIntermediateOutputPath>
 	<OutputPath>netcoreapp2.1\bin\Debug\</OutputPath>
+      <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+      <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
