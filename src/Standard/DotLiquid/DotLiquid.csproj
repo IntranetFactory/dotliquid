@@ -45,6 +45,7 @@
     <Compile Include="..\..\Common\Code\Context.cs" Link="Context.cs" />
     <Compile Include="..\..\Common\Code\Document.cs" Link="Document.cs" />
     <Compile Include="..\..\Common\Code\Drop.cs" Link="Drop.cs" />
+	<Compile Include="..\..\Common\Code\ErrorsOutputModeEnum.cs" Link="ErrorsOutputModeEnum.cs" />
     <Compile Include="..\..\Common\Code\Exceptions\ArgumentException.cs" Link="Exceptions\ArgumentException.cs" />
     <Compile Include="..\..\Common\Code\Exceptions\ContextException.cs" Link="Exceptions\ContextException.cs" />
     <Compile Include="..\..\Common\Code\Exceptions\FileSystemException.cs" Link="Exceptions\FileSystemException.cs" />
@@ -119,6 +120,7 @@
 
   <ItemGroup>
     <PackageReference Include="SonarAnalyzer.CSharp" Version="5.11.0.1761" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

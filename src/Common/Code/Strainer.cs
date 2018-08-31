@@ -103,11 +103,15 @@ namespace DotLiquid
 
         public bool RespondTo(string method)
         {
+            string methodName = Template.NamingConvention.GetMemberName(method);
             return _methods.ContainsKey(method);
         }
 
-        public object Invoke(string method, List<object> args)
+        public object Invoke(string methodName, List<object> args)
         {
+
+            string method = Template.NamingConvention.GetMemberName(methodName);
+
             // First, try to find a method with the same number of arguments minus context which we set automatically further down.
             var methodInfo = _methods[method].FirstOrDefault(m => 
                 m.Item2.GetParameters().Where(p => p.ParameterType != typeof(Context)).Count() == args.Count);

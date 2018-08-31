@@ -36,6 +36,7 @@
     <Compile Include="..\..\Common\Tests\FilterTests.cs" Link="FilterTests.cs" />
     <Compile Include="..\..\Common\Tests\Framework\ExtendedCollectionAssert.cs" Link="Framework\ExtendedCollectionAssert.cs" />
     <Compile Include="..\..\Common\Tests\FunctionFilterTests.cs" Link="FunctionFilterTests.cs" />
+	<Compile Include="..\..\Common\Tests\HashTests.cs" Link="HashTests.cs" />
     <Compile Include="..\..\Common\Tests\Helper.cs" Link="Helper.cs" />
     <Compile Include="..\..\Common\Tests\LazyHashTest.cs" Link="LazyHashTest.cs" />
     <Compile Include="..\..\Common\Tests\LiquidTypeAttributeTests.cs" Link="LiquidTypeAttributeTests.cs" />

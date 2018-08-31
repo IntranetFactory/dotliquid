@@ -12,6 +12,11 @@ namespace DotLiquid.NamingConventions
         public string GetMemberName(string name)
         {
 
+            if (name == "default")
+            {
+                name = "Default"; //first letter uppercase
+            }
+
             if (!string.IsNullOrEmpty(name))
             {
                 name = name[0].ToString().ToUpper() + name.Substring(1);

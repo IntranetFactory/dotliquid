@@ -82,7 +82,7 @@ namespace DotLiquid
         /// <returns></returns>
         public string Render(Context context)
         {
-            using (TextWriter result = new StringWriter())
+            using (TextWriter result = new StringWriter(context.FormatProvider))
             {
                 Render(context, result);
                 return result.ToString();

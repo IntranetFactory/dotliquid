@@ -63,7 +63,7 @@ namespace DotLiquid
 
         public void Render(Context context, TextWriter result)
         {
-            string ToFormattedString(object o, IFormatProvider ifp) => o is IFormattable ifo ? ifo.ToString( null, ifp ) : o.ToString();
+            string ToFormattedString(object o, IFormatProvider ifp) => o is IFormattable ifo ? ifo.ToString(null, ifp) : (o?.ToString() ?? "");
 
             object output = RenderInternal(context);
 
@@ -106,7 +106,8 @@ namespace DotLiquid
                 try
                 {
                     filterArgs.Insert(0, output);
-                    output = context.Invoke(filter.Name, filterArgs);
+                    string filterName = filter.Name;
+                    output = context.Invoke(filterName, filterArgs);
                 }
                 catch (FilterNotFoundException ex)
                 {

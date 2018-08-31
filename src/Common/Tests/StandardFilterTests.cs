@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 
@@ -51,6 +52,62 @@ namespace DotLiquid.Tests
         }
 
         [Test]
+        public void TestEscape_CSharpNamingConvention()
+        {
+            Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+            Helper.AssertTemplateResult("a\r\nb\r\nc",
+                "{{ source | escape }}",
+                Hash.FromAnonymousObject(new { source = "a\r\nb\r\nc" }));
+        }
+
+        [Test]
+        public void TestJsonEscape_RubyNamingConvention()
+        {
+            Template.NamingConvention = new NamingConventions.RubyNamingConvention();
+            Helper.AssertTemplateResult("a\\r\\nb\\r\\nc",
+                "{{ source | json_escape }}",
+                Hash.FromAnonymousObject(new { source = "a\r\nb\r\nc" }));
+        }
+
+        [Test]
+        public void TestJsonEscape_CSharpNamingConvention()
+        {
+            Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+            Helper.AssertTemplateResult("a\\r\\nb\\r\\nc",
+                "{{ source | json_escape }}",
+                Hash.FromAnonymousObject(new { source = "a\r\nb\r\nc" }));
+        }
+
+        [Test]
+        public void Testescape()
+        {
+            Helper.AssertTemplateResult("&lt;strong&gt;",
+                "{{ source | escape }}",
+                Hash.FromAnonymousObject(new { source = "<strong>" }));
+        }
+
+        [Test]
+        public void TestCSharpNamingConventionProblem()
+        {
+
+            //Template.NamingConvention = new NamingConventions.RubyNamingConvention();
+            //Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+            Template template = Template.Parse("1{{testValue}}2");
+            Assert.AreEqual("1abc2", template.Render(Hash.FromAnonymousObject(new { testValue = "abc" })));
+
+        }
+
+        //[Test]
+        //public void TestCSharpNamingConventionProblemWithJsonEscape()
+        //{//this don't add filters, so json_escape cannot be tested in 'Render' call such this one
+
+        //    Template.NamingConvention = new NamingConventions.CSharpNamingConvention();
+        //    Template template = Template.Parse("1{{testValue}}2 | json_escape");
+        //    Assert.AreEqual("1abc2", template.Render(Hash.FromAnonymousObject(new { testValue = @"a""bc" })));
+
+        //}
+
+        [Test]
         public void TestTruncateWords()
         {
             Assert.AreEqual(null, StandardFilters.TruncateWords(null));
@@ -77,6 +134,36 @@ namespace DotLiquid.Tests
         }
 
         [Test]
+        public void TestStrip()
+        {
+            Assert.AreEqual("test", StandardFilters.Strip("  test  "));
+            Assert.AreEqual("test", StandardFilters.Strip("   test"));
+            Assert.AreEqual("test", StandardFilters.Strip("test   "));
+            Assert.AreEqual("test", StandardFilters.Strip("test"));
+            Assert.AreEqual(null, StandardFilters.Strip(null));
+        }
+
+        [Test]
+        public void TestLStrip()
+        {
+            Assert.AreEqual("test  ", StandardFilters.LStrip("  test  "));
+            Assert.AreEqual("test", StandardFilters.LStrip("   test"));
+            Assert.AreEqual("test   ", StandardFilters.LStrip("test   "));
+            Assert.AreEqual("test", StandardFilters.LStrip("test"));
+            Assert.AreEqual(null, StandardFilters.LStrip(null));
+        }
+
+        [Test]
+        public void TestRStrip()
+        {
+            Assert.AreEqual("  test", StandardFilters.RStrip("  test  "));
+            Assert.AreEqual("   test", StandardFilters.RStrip("   test"));
+            Assert.AreEqual("test", StandardFilters.RStrip("test   "));
+            Assert.AreEqual("test", StandardFilters.RStrip("test"));
+            Assert.AreEqual(null, StandardFilters.RStrip(null));
+        }
+
+        [Test]
         public void TestJoin()
         {
             Assert.AreEqual(null, StandardFilters.Join(null));
@@ -88,10 +175,37 @@ namespace DotLiquid.Tests
         [Test]
         public void TestSort()
         {
+            Assert.AreEqual(null, StandardFilters.Sort(null));
             CollectionAssert.AreEqual(new string[] { }, StandardFilters.Sort(new string[] { }));
             CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, StandardFilters.Sort(new[] { 4, 3, 2, 1 }));
             CollectionAssert.AreEqual(new[] { new { a = 1 }, new { a = 2 }, new { a = 3 }, new { a = 4 } },
                 StandardFilters.Sort(new[] { new { a = 4 }, new { a = 3 }, new { a = 1 }, new { a = 2 } }, "a"));
+        }
+
+        [Test]
+        public void TestSort_OnHashList_WithProperty_DoesNotFlattenList()
+        {
+            var list = new System.Collections.Generic.List<Hash>();
+            var hash1 = CreateHash("1", "Text1");
+            var hash2 = CreateHash("2", "Text2");
+            var hash3 = CreateHash("3", "Text3");
+            list.Add(hash3);
+            list.Add(hash1);
+            list.Add(hash2);
+
+            var result = StandardFilters.Sort(list, "sortby").Cast<Hash>().ToArray();
+            Assert.AreEqual(3, result.Count());
+            Assert.AreEqual(hash1["content"], result[0]["content"]);
+            Assert.AreEqual(hash2["content"], result[1]["content"]);
+            Assert.AreEqual(hash3["content"], result[2]["content"]);
+        }
+
+        private static Hash CreateHash(string sortby, string content)
+        {
+            var hash = new Hash();
+            hash.Add("sortby", sortby);
+            hash.Add("content", content);
+            return hash;
         }
 
         [Test]
@@ -113,6 +227,33 @@ namespace DotLiquid.Tests
                     }));
             CollectionAssert.AreEqual(new[] { new { a = 1 }, new { a = 2 }, new { a = 3 }, new { a = 4 } },
                 StandardFilters.Map(new[] { new { a = 1 }, new { a = 2 }, new { a = 3 }, new { a = 4 } }, "b"));
+
+            Assert.AreEqual(null, StandardFilters.Map(null, "a"));
+            CollectionAssert.AreEqual(new object[] { null }, StandardFilters.Map(new object[] { null }, "a"));
+
+            var hash = Hash.FromAnonymousObject(new
+            {
+                ary = new[] {
+                    new Helper.DataObject { PropAllowed = "a", PropDisallowed = "x" },
+                    new Helper.DataObject { PropAllowed = "b", PropDisallowed = "y" },
+                    new Helper.DataObject { PropAllowed = "c", PropDisallowed = "z" },
+                }
+            });
+
+            Helper.AssertTemplateResult("abc", "{{ ary | map:'prop_allowed' | join:'' }}", hash);
+            Helper.AssertTemplateResult("", "{{ ary | map:'prop_disallowed' | join:'' }}", hash);
+
+            hash = Hash.FromAnonymousObject(new
+            {
+                ary = new[] {
+                    new Helper.DataObjectDrop { Prop = "a" },
+                    new Helper.DataObjectDrop { Prop = "b" },
+                    new Helper.DataObjectDrop { Prop = "c" },
+                }
+            });
+
+            Helper.AssertTemplateResult("abc", "{{ ary | map:'prop' | join:'' }}", hash);
+            Helper.AssertTemplateResult("", "{{ ary | map:'no_prop' | join:'' }}", hash);
         }
 
         [TestCase("6.72", "$6.72")]
@@ -138,7 +279,7 @@ namespace DotLiquid.Tests
         [TestCase("6000000.4", "6.000.000,40 €")]
         [TestCase("6.8458", "6,85 €")]
         public void TestEuroCurrencyFromString(string input, string expected)
-        {
+        {//it is known that test fails for now due '€'
 #if CORE
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
 #else
@@ -155,7 +296,7 @@ namespace DotLiquid.Tests
 
         [Test]
         public void TestCurrencyWithinTemplateRender()
-        {
+        {//it is known that test fails for now due '€'
 #if CORE
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
 #else
@@ -171,7 +312,7 @@ namespace DotLiquid.Tests
 
         [Test]
         public void TestCurrencyFromDoubleInput()
-        {
+        {//it is known that test fails for now due '€'
             Assert.AreEqual("$6.85", StandardFilters.Currency(6.8458, "en-US"));
             Assert.AreEqual("$6.72", StandardFilters.Currency(6.72, "en-CA"));
             Assert.AreEqual("6.000.000,00 €", StandardFilters.Currency(6000000, "de-DE"));
@@ -192,8 +333,10 @@ namespace DotLiquid.Tests
             Assert.AreEqual(dateTimeFormat.GetMonthName(6), StandardFilters.Date("2006-06-05 10:00:00", "MMMM"));
             Assert.AreEqual(dateTimeFormat.GetMonthName(7), StandardFilters.Date("2006-07-05 10:00:00", "MMMM"));
 
-            Assert.AreEqual("05/07/2006 10:00:00", StandardFilters.Date("05/07/2006 10:00:00", string.Empty));
-            Assert.AreEqual("05/07/2006 10:00:00", StandardFilters.Date("05/07/2006 10:00:00", null));
+            Assert.AreEqual("08/01/2006 10:00:00", StandardFilters.Date("08/01/2006 10:00:00", string.Empty));
+            Assert.AreEqual("08/02/2006 10:00:00", StandardFilters.Date("08/02/2006 10:00:00", null));
+            Assert.AreEqual(new DateTime(2006, 8, 3, 10, 0, 0).ToString(), StandardFilters.Date(new DateTime(2006, 8, 3, 10, 0, 0), string.Empty));
+            Assert.AreEqual(new DateTime(2006, 8, 4, 10, 0, 0).ToString(), StandardFilters.Date(new DateTime(2006, 8, 4, 10, 0, 0), null));
 
             Assert.AreEqual(new DateTime(2006, 7, 5).ToString("MM/dd/yyyy"), StandardFilters.Date("2006-07-05 10:00:00", "MM/dd/yyyy"));
 
@@ -207,6 +350,13 @@ namespace DotLiquid.Tests
             Assert.AreEqual(DateTime.Now.ToString("MM/dd/yyyy"), StandardFilters.Date("today", "MM/dd/yyyy"));
             Assert.AreEqual(DateTime.Now.ToString("MM/dd/yyyy"), StandardFilters.Date("Now", "MM/dd/yyyy"));
             Assert.AreEqual(DateTime.Now.ToString("MM/dd/yyyy"), StandardFilters.Date("Today", "MM/dd/yyyy"));
+
+            Assert.AreEqual(DateTime.Now.ToString(), StandardFilters.Date("now", null));
+            Assert.AreEqual(DateTime.Now.ToString(), StandardFilters.Date("today", null));
+            Assert.AreEqual(DateTime.Now.ToString(), StandardFilters.Date("now", string.Empty));
+            Assert.AreEqual(DateTime.Now.ToString(), StandardFilters.Date("today", string.Empty));
+
+            Assert.AreEqual("345000", StandardFilters.Date(DateTime.Parse("2006-05-05 10:00:00.345"), "ffffff"));
 
             Template template = Template.Parse(@"{{ hi | date:""MMMM"" }}");
             Assert.AreEqual("hi", template.Render(Hash.FromAnonymousObject(new { hi = "hi" })));
@@ -228,6 +378,8 @@ namespace DotLiquid.Tests
 
             Assert.AreEqual("05/07/2006 10:00:00", StandardFilters.Date("05/07/2006 10:00:00", string.Empty));
             Assert.AreEqual("05/07/2006 10:00:00", StandardFilters.Date("05/07/2006 10:00:00", null));
+            Assert.AreEqual(new DateTime(2006, 8, 3, 10, 0, 0).ToString(), StandardFilters.Date(new DateTime(2006, 8, 3, 10, 0, 0), string.Empty));
+            Assert.AreEqual(new DateTime(2006, 8, 4, 10, 0, 0).ToString(), StandardFilters.Date(new DateTime(2006, 8, 4, 10, 0, 0), null));
 
             Assert.AreEqual("07/05/2006", StandardFilters.Date("2006-07-05 10:00:00", "%m/%d/%Y"));
 
@@ -365,12 +517,15 @@ namespace DotLiquid.Tests
         [Test]
         public void TestTimes()
         {
-            Helper.AssertTemplateResult("12", "{{ 3 | times:4 }}");
-            Helper.AssertTemplateResult("125", "{{ 10 | times:12.5 }}");
-            Helper.AssertTemplateResult("125", "{{ 10.0 | times:12.5 }}");
-            Helper.AssertTemplateResult("125", "{{ 12.5 | times:10 }}");
-            Helper.AssertTemplateResult("125", "{{ 12.5 | times:10.0 }}");
-            Helper.AssertTemplateResult("foofoofoofoo", "{{ 'foo' | times:4 }}");
+            using (CultureHelper.SetCulture("en-GB"))
+            {
+                Helper.AssertTemplateResult("12", "{{ 3 | times:4 }}");
+                Helper.AssertTemplateResult("125", "{{ 10 | times:12.5 }}");
+                Helper.AssertTemplateResult("125", "{{ 10.0 | times:12.5 }}");
+                Helper.AssertTemplateResult("125", "{{ 12.5 | times:10 }}");
+                Helper.AssertTemplateResult("125", "{{ 12.5 | times:10.0 }}");
+                Helper.AssertTemplateResult("foofoofoofoo", "{{ 'foo' | times:4 }}");
+            }
         }
 
         [Test]
@@ -392,11 +547,23 @@ namespace DotLiquid.Tests
         [Test]
         public void TestDividedBy()
         {
-            Helper.AssertTemplateResult("4", "{{ 12 | divided_by:3 }}");
-            Helper.AssertTemplateResult("4", "{{ 14 | divided_by:3 }}");
-            Helper.AssertTemplateResult("5", "{{ 15 | divided_by:3 }}");
+            Helper.AssertTemplateResult("4", "{{ 12 | DividedBy:3 }}");
+            Helper.AssertTemplateResult("4", "{{ 14 | DividedBy:3 }}");
+            Helper.AssertTemplateResult("5", "{{ 15 | DividedBy:3 }}");
             Assert.Null(StandardFilters.DividedBy(null, 3));
             Assert.Null(StandardFilters.DividedBy(4, null));
+        }
+
+        [Test]
+        public void TestInt32DividedByInt64()
+        {
+            int a = 20;
+            long b = 5;
+            var c = a / b;
+            Assert.AreEqual(c, (long)4);
+
+            Hash assigns = Hash.FromAnonymousObject(new { a = a, b = b });
+            Helper.AssertTemplateResult("4", "{{ a | DividedBy:b }}", assigns);
         }
 
         [Test]

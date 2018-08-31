@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -139,7 +140,7 @@ namespace DotLiquid.Tags
                         ((List<Block>)context.Scopes[0]["extends"]).Add(block);
                     }
                 }
-                template.Render(result, RenderParameters.FromContext(context));
+                template.Render(result, RenderParameters.FromContext(context, result.FormatProvider));
             });
         }
 

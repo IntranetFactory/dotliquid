@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using NUnit.Framework;
 
 namespace DotLiquid.Tests
@@ -64,15 +65,15 @@ namespace DotLiquid.Tests
         string Render(CultureInfo culture)
         {
 
-            var renderParams = new RenderParameters
+            var renderParams = new RenderParameters(culture)
                                {
                                    LocalVariables = _assigns 
                                };
-            return Template.Parse("{{number}}").Render(renderParams, culture);
+            return Template.Parse("{{number}}").Render(renderParams);
         }
 
         [Test]
- 	    public void TestSeperator_Comma()
+        public void TestSeperator_Comma()
         {
 
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -84,8 +85,9 @@ namespace DotLiquid.Tests
             Assert.AreEqual("3,145", Render(c) );
 
         }
- 	    [Test]
- 	    public void TestSeperator_Decimal()
+
+        [Test]
+        public void TestSeperator_Decimal()
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -97,6 +99,98 @@ namespace DotLiquid.Tests
 
         }
 
+        private class ActionDisposable : IDisposable
+        {
+            private readonly Action _Action;
+
+            public ActionDisposable(Action action) => _Action = action;
+
+            public void Dispose() => _Action();
+        }
+
+        IDisposable SetCulture(CultureInfo ci)
+        {
+            var old = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = ci;
+            return new ActionDisposable(() => Thread.CurrentThread.CurrentCulture = old);
+        }
+
+        [Test]
+        public void ParsingWithCommaDecimalSeparatorShouldWorkWhenPassedCultureIsDifferentToCurrentCulture()
+        {
+            var ci = new CultureInfo(CultureInfo.CurrentCulture.Name)
+            {
+                NumberFormat =
+                      {
+                          NumberDecimalSeparator = ","
+                          , NumberGroupSeparator = "."
+                      }
+            };
+            using (SetCulture(ci))
+            {
+                var t = Template.Parse("{{2.5}}");
+                var result = t.Render(new Hash(), CultureInfo.InvariantCulture);
+
+                Assert.AreEqual(result, "2.5");
+            }
+        }
+
+        [Test]
+        public void ParsingWithInvariantCultureShouldWork()
+        {
+            var ci = new CultureInfo(CultureInfo.CurrentCulture.Name)
+            {
+                NumberFormat =
+                                  {
+                                      NumberDecimalSeparator = ","
+                                      , NumberGroupSeparator = "."
+                                  }
+            };
+            using (SetCulture(ci))
+            {
+                float.TryParse("2.5", NumberStyles.Number, CultureInfo.InvariantCulture, out var result);
+
+                Assert.AreEqual(2.5, result);
+            }
+        }
+
+        [Test]
+        public void ParsingWithExplicitCultureShouldWork()
+        {
+            var ci = new CultureInfo(CultureInfo.CurrentCulture.Name)
+            {
+                NumberFormat =
+                                     {
+                                         NumberDecimalSeparator = ","
+                                         , NumberGroupSeparator = "."
+                                     }
+            };
+            using (SetCulture(ci))
+            {
+                Thread.CurrentThread.CurrentCulture = ci;
+                float.TryParse("2.5", NumberStyles.Number, ci, out var result);
+
+                Assert.AreEqual(25, result);
+            }
+        }
+
+        [Test]
+        public void ParsingWithDefaultCultureShouldWork()
+        {
+            var ci = new CultureInfo(CultureInfo.CurrentCulture.Name)
+            {
+                NumberFormat =
+                                  {
+                                      NumberDecimalSeparator = ","
+                                      , NumberGroupSeparator = "."
+                                  }
+            };
+            using (SetCulture(ci))
+            {
+                float.TryParse("2.5", out var result);
+                Assert.AreEqual(25, result);
+            }
+        }
 
         [Test]
         public void TestVariableTraversing()
@@ -107,55 +201,55 @@ namespace DotLiquid.Tests
         [Test]
         public void TestVariablePiping()
         {
-            Assert.AreEqual(" LOL ", Template.Parse(" {{ car.gm | make_funny }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" LOL ", Template.Parse(" {{ car.gm | MakeFunny }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithInput()
         {
-            Assert.AreEqual(" LOL: bad ", Template.Parse(" {{ car.gm | cite_funny }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" LOL: bad ", Template.Parse(" {{ car.gm | CiteFunny }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithArgs()
         {
-            Assert.AreEqual(" bad :-( ", Template.Parse(" {{ car.gm | add_smiley : ':-(' }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" bad :-( ", Template.Parse(" {{ car.gm | AddSmiley : ':-(' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithNoArgs()
         {
-            Assert.AreEqual(" bad :-) ", Template.Parse(" {{ car.gm | add_smiley }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" bad :-) ", Template.Parse(" {{ car.gm | AddSmiley }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestMultipleVariablePipingWithArgs()
         {
-            Assert.AreEqual(" bad :-( :-( ", Template.Parse(" {{ car.gm | add_smiley : ':-(' | add_smiley : ':-(' }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" bad :-( :-( ", Template.Parse(" {{ car.gm | AddSmiley : ':-(' | AddSmiley : ':-(' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithArgs2()
         {
-            Assert.AreEqual(" <span id=\"bar\">bad</span> ", Template.Parse(" {{ car.gm | add_tag : 'span', 'bar' }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <span id=\"bar\">bad</span> ", Template.Parse(" {{ car.gm | AddTag : 'span', 'bar' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithWithVariableArgs()
         {
-            Assert.AreEqual(" <span id=\"good\">bad</span> ", Template.Parse(" {{ car.gm | add_tag : 'span', car.bmw }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <span id=\"good\">bad</span> ", Template.Parse(" {{ car.gm | AddTag : 'span', car.bmw }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestMultiplePipings()
         {
-            Assert.AreEqual(" <p>LOL: bmw</p> ", Template.Parse(" {{ best_cars | cite_funny | paragraph }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <p>LOL: bmw</p> ", Template.Parse(" {{ best_cars | CiteFunny | paragraph }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestLinkTo()
         {
-            Assert.AreEqual(" <a href=\"http://typo.leetsoft.com\">Typo</a> ", Template.Parse(" {{ 'Typo' | link_to: 'http://typo.leetsoft.com' }} ").Render(new RenderParameters { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <a href=\"http://typo.leetsoft.com\">Typo</a> ", Template.Parse(" {{ 'Typo' | LinkTo: 'http://typo.leetsoft.com' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
     }
 }

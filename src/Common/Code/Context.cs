@@ -24,8 +24,8 @@ namespace DotLiquid
         private static readonly Regex SquareBracketedRegex = R.C(R.Q(@"^\[(.*)\]$"));
         private static readonly Regex VariableParserRegex = R.C(Liquid.VariableParser);
 
-        private readonly RenderParameters.ErrorsOutputModeEnum _errorsOutputMode;
-        
+        private readonly ErrorsOutputMode _errorsOutputMode;
+
         private readonly int _maxIterations;
 
         public int MaxIterations
@@ -46,7 +46,7 @@ namespace DotLiquid
         public List<Hash> Scopes { get; private set; }
 
         /// <summary>
-        /// Registers
+        /// Hash of user-defined, internally-available variables
         /// </summary>
         public Hash Registers { get; private set; }
 
@@ -62,7 +62,14 @@ namespace DotLiquid
         /// <param name="outerScope"></param>
         /// <param name="registers"></param>
         /// <param name="errorsOutputMode"></param>
-        public Context(List<Hash> environments, Hash outerScope, Hash registers, RenderParameters.ErrorsOutputModeEnum errorsOutputMode, int maxIterations, int timeout)
+        public Context
+            (List<Hash> environments
+             , Hash outerScope
+             , Hash registers
+             , ErrorsOutputMode errorsOutputMode
+             , int maxIterations
+             , int timeout
+             , IFormatProvider formatProvider)
         {
             Environments = environments;
 
@@ -76,6 +83,7 @@ namespace DotLiquid
             _errorsOutputMode = errorsOutputMode;
             _maxIterations = maxIterations;
             _timeout = timeout;
+            FormatProvider = formatProvider;
 
             RestartTimeout();
 
@@ -85,8 +93,8 @@ namespace DotLiquid
         /// <summary>
         /// Creates a new rendering context
         /// </summary>
-        public Context()
-            : this(new List<Hash>(), new Hash(), new Hash(), RenderParameters.ErrorsOutputModeEnum.Display, 0, 0)
+        public Context(IFormatProvider formatProvider)
+            : this(new List<Hash>(), new Hash(), new Hash(), ErrorsOutputMode.Display, 0, 0, formatProvider)
         {
         }
 
@@ -157,10 +165,10 @@ namespace DotLiquid
 
             Errors.Add(ex);
 
-            if (_errorsOutputMode == RenderParameters.ErrorsOutputModeEnum.Suppress)
+            if (_errorsOutputMode == ErrorsOutputMode.Suppress)
                 return string.Empty;
 
-            if (_errorsOutputMode == RenderParameters.ErrorsOutputModeEnum.Rethrow)
+            if (_errorsOutputMode == ErrorsOutputMode.Rethrow)
                 throw ex;
 
             if (ex is SyntaxException)
@@ -344,7 +352,7 @@ namespace DotLiquid
                 // For cultures with "," as the decimal separator, allow
                 // both "," and "." to be used as the separator.
                 // First try to parse using current culture.
-                if (float.TryParse(match.Groups[1].Value, out float result))
+                if (float.TryParse(match.Groups[1].Value, NumberStyles.Number, FormatProvider, out float result))
                     return result;
 
                 // If that fails, try to parse using invariant culture.
@@ -353,6 +361,8 @@ namespace DotLiquid
 
             return Variable(key, notifyNotFound);
         }
+
+        public IFormatProvider FormatProvider { get; }
 
         /// <summary>
         /// Fetches an object starting at the local scope and then moving up
@@ -626,7 +636,7 @@ namespace DotLiquid
         }
 
         private readonly int _timeout;
-        private Stopwatch _stopwatch = new Stopwatch();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         public void RestartTimeout()
         {

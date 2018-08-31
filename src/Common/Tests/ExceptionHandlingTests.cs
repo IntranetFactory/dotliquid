@@ -1,5 +1,6 @@
-﻿using DotLiquid.Exceptions;
+using DotLiquid.Exceptions;
 using NUnit.Framework;
+using System.Globalization;
 
 namespace DotLiquid.Tests
 {
@@ -28,7 +29,7 @@ namespace DotLiquid.Tests
         public void TestSyntaxException()
         {
             Template template = null;
-            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.syntax_exception }} "); });
+            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.SyntaxException }} "); });
             string result = template.Render(Hash.FromAnonymousObject(new { errors = new ExceptionDrop() }));
             Assert.AreEqual(" Liquid syntax error: syntax exception ", result);
 
@@ -40,7 +41,7 @@ namespace DotLiquid.Tests
         public void TestArgumentException()
         {
             Template template = null;
-            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.argument_exception }} "); });
+            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.ArgumentException }} "); });
             string result = template.Render(Hash.FromAnonymousObject(new { errors = new ExceptionDrop() }));
             Assert.AreEqual(" Liquid error: argument exception ", result);
 
@@ -69,7 +70,7 @@ namespace DotLiquid.Tests
         public void TestInterruptException()
         {
             Template template = null;
-            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.interrupt_exception }} "); });
+            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.InterruptException }} "); });
             var localVariables = Hash.FromAnonymousObject(new { errors = new ExceptionDrop() });
             var exception = Assert.Throws<InterruptException>(() => template.Render(localVariables));
 
@@ -82,7 +83,7 @@ namespace DotLiquid.Tests
             var template = Template.Parse(" {% for i in (1..100000) %} {{ i }} {% endfor %} ");
             Assert.Throws<MaximumIterationsExceededException>(() =>
             {
-                template.Render(new RenderParameters
+                template.Render(new RenderParameters(CultureInfo.InvariantCulture)
                 {
                     MaxIterations = 50
                 });
@@ -95,7 +96,7 @@ namespace DotLiquid.Tests
             var template = Template.Parse(" {% for i in (1..1000000) %} {{ i }} {% endfor %} ");
             Assert.Throws<System.TimeoutException>(() =>
             {
-                template.Render(new RenderParameters
+                template.Render(new RenderParameters(CultureInfo.InvariantCulture)
                 {
                     Timeout = 100 //ms
                 });
@@ -110,10 +111,10 @@ namespace DotLiquid.Tests
 
             Assert.Throws<SyntaxException>(() =>
             {
-                var output = template.Render(new RenderParameters
+                var output = template.Render(new RenderParameters(CultureInfo.InvariantCulture)
                 {
                     LocalVariables = assigns,
-                    ErrorsOutputMode = RenderParameters.ErrorsOutputModeEnum.Rethrow
+                    ErrorsOutputMode = ErrorsOutputMode.Rethrow
                 });
             });
         }
@@ -124,10 +125,10 @@ namespace DotLiquid.Tests
             var template = Template.Parse("{{test}}");
             Hash assigns = new Hash((h, k) => { throw new SyntaxException("Unknown variable '" + k + "'"); });
 
-            var output = template.Render(new RenderParameters
+            var output = template.Render(new RenderParameters(CultureInfo.InvariantCulture)
             {
                 LocalVariables = assigns,
-                ErrorsOutputMode = RenderParameters.ErrorsOutputModeEnum.Suppress
+                ErrorsOutputMode = ErrorsOutputMode.Suppress
             });
             Assert.AreEqual("", output);
         }
@@ -138,10 +139,10 @@ namespace DotLiquid.Tests
             var template = Template.Parse("{{test}}");
             Hash assigns = new Hash((h, k) => { throw new SyntaxException("Unknown variable '" + k + "'"); });
 
-            var output = template.Render(new RenderParameters
+            var output = template.Render(new RenderParameters(CultureInfo.InvariantCulture)
             {
                 LocalVariables = assigns,
-                ErrorsOutputMode = RenderParameters.ErrorsOutputModeEnum.Display
+                ErrorsOutputMode = ErrorsOutputMode.Display
             });
             Assert.IsNotEmpty(output);
         }

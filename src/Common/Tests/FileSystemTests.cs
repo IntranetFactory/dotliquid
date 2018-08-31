@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace DotLiquid.Tests
 {
+    using System.Globalization;
     using System.Reflection;
 
     [TestFixture]
@@ -12,7 +13,7 @@ namespace DotLiquid.Tests
         [Test]
         public void TestDefault()
         {
-            Assert.Throws<FileSystemException>(() => new BlankFileSystem().ReadTemplateFile(new Context(), "dummy"));
+            Assert.Throws<FileSystemException>(() => new BlankFileSystem().ReadTemplateFile(new Context(CultureInfo.InvariantCulture), "dummy"));
         }
         
 
