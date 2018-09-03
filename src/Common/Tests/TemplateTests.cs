@@ -178,6 +178,38 @@ namespace DotLiquid.Tests
             }
         }
 
+        [Test]
+        public void TestTemplateReplaceFilterFirstLetterUpperCase()
+        {
+            Template template = Template.Parse("aaa {{test | Replace: 'image card', 'bbb'}} ccc");
+
+            var output = new MemoryStream();
+            template.Render(output, new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = Hash.FromAnonymousObject(new { test = "image card" }) });
+
+            output.Seek(0, SeekOrigin.Begin);
+
+            using (TextReader reader = new StreamReader(output))
+            {
+                Assert.AreEqual("aaa bbb ccc", reader.ReadToEnd());
+            }
+        }
+
+        [Test]
+        public void TestTemplateReplaceFilterFirstLetterLowerCase()
+        {
+            Template template = Template.Parse("aaa {{test | replace: 'image card', 'bbb'}} ccc");
+
+            var output = new MemoryStream();
+            template.Render(output, new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = Hash.FromAnonymousObject(new { test = "image card" }) });
+
+            output.Seek(0, SeekOrigin.Begin);
+
+            using (TextReader reader = new StreamReader(output))
+            {
+                Assert.AreEqual("aaa bbb ccc", reader.ReadToEnd());
+            }
+        }
+
         public class MySimpleType
         {
             public string Name { get; set; }
