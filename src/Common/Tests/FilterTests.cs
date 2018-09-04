@@ -51,7 +51,7 @@ namespace DotLiquid.Tests
                 return string.Concat(one, two);
             }
 
-            public static string Concat(string one, string two, string three)
+            public static string concat(string one, string two, string three)
             {
                 return string.Concat(one, two, three);
             }

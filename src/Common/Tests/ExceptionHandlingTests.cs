@@ -29,7 +29,7 @@ namespace DotLiquid.Tests
         public void TestSyntaxException()
         {
             Template template = null;
-            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.SyntaxException }} "); });
+            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.syntax_exception }} "); });
             string result = template.Render(Hash.FromAnonymousObject(new { errors = new ExceptionDrop() }));
             Assert.AreEqual(" Liquid syntax error: syntax exception ", result);
 
@@ -70,7 +70,7 @@ namespace DotLiquid.Tests
         public void TestInterruptException()
         {
             Template template = null;
-            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.InterruptException }} "); });
+            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.interrupt_exception }} "); });
             var localVariables = Hash.FromAnonymousObject(new { errors = new ExceptionDrop() });
             var exception = Assert.Throws<InterruptException>(() => template.Render(localVariables));
 

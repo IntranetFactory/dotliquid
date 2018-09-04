@@ -17,10 +17,13 @@ namespace DotLiquid.NamingConventions
                 name = "Default"; //first letter uppercase
             }
 
-            if (!string.IsNullOrEmpty(name))
-            {
-                name = name[0].ToString().ToUpper() + name.Substring(1);
-            }
+            //if (!string.IsNullOrEmpty(name))
+            //{
+            //    if (!name.Contains("_"))
+            //    {
+            //        name = name[0].ToString().ToUpper() + name.Substring(1);
+            //    }
+            //}
 
             return name;
 

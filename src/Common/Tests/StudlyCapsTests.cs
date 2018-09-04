@@ -33,8 +33,9 @@ namespace DotLiquid.Tests
             Template template = Template.Parse("{{ 'hi tobi' | upcase }}");
             Assert.AreEqual("HI TOBI", template.Render());
 
+            
             Template.NamingConvention = new CSharpNamingConvention();
-            template = Template.Parse("{{ 'hi tobi' | Upcase }}");
+            template = Template.Parse("{{ 'hi tobi' | upcase }}");//CSharpNamingConvention don't support any more upper case first letter
             Assert.AreEqual("HI TOBI", template.Render());
         }
 

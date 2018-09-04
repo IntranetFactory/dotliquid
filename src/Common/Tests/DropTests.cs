@@ -178,7 +178,7 @@ namespace DotLiquid.Tests
         [Test]
         public void TestTextDrop()
         {
-            string output = Template.Parse(" {{ product.Texts.Text }} ")
+            string output = Template.Parse(" {{ product.Texts.text }} ")
                 .Render(Hash.FromAnonymousObject(new { product = new ProductDrop() }));
             Assert.AreEqual(" text1 ", output);
         }
@@ -194,7 +194,7 @@ namespace DotLiquid.Tests
         [Test]
         public void TestTextArrayDrop()
         {
-            string output = Template.Parse("{% for text in product.Texts.Array %} {{text}} {% endfor %}")
+            string output = Template.Parse("{% for text in product.Texts.array %} {{text}} {% endfor %}")
                 .Render(Hash.FromAnonymousObject(new { product = new ProductDrop() }));
             Assert.AreEqual(" text1  text2 ", output);
         }
@@ -226,17 +226,17 @@ namespace DotLiquid.Tests
         [Test]
         public void TestScope()
         {
-            Assert.AreEqual("1", Template.Parse("{{ context.Scopes }}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop() })));
-            Assert.AreEqual("2", Template.Parse("{%for i in dummy%}{{ context.Scopes }}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
-            Assert.AreEqual("3", Template.Parse("{%for i in dummy%}{%for i in dummy%}{{ context.Scopes }}{%endfor%}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
+            Assert.AreEqual("1", Template.Parse("{{ context.scopes }}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop() })));
+            Assert.AreEqual("2", Template.Parse("{%for i in dummy%}{{ context.scopes }}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
+            Assert.AreEqual("3", Template.Parse("{%for i in dummy%}{%for i in dummy%}{{ context.scopes }}{%endfor%}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
         }
 
         [Test]
         public void TestScopeThroughProc()
         {
-            Assert.AreEqual("1", Template.Parse("{{ s }}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), s = (Proc)(c => c["context.Scopes"]) })));
-            Assert.AreEqual("2", Template.Parse("{%for i in dummy%}{{ s }}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), s = (Proc)(c => c["context.Scopes"]), dummy = new[] { 1 } })));
-            Assert.AreEqual("3", Template.Parse("{%for i in dummy%}{%for i in dummy%}{{ s }}{%endfor%}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), s = (Proc)(c => c["context.Scopes"]), dummy = new[] { 1 } })));
+            Assert.AreEqual("1", Template.Parse("{{ s }}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), s = (Proc)(c => c["context.scopes"]) })));
+            Assert.AreEqual("2", Template.Parse("{%for i in dummy%}{{ s }}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), s = (Proc)(c => c["context.scopes"]), dummy = new[] { 1 } })));
+            Assert.AreEqual("3", Template.Parse("{%for i in dummy%}{%for i in dummy%}{{ s }}{%endfor%}{%endfor%}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), s = (Proc)(c => c["context.scopes"]), dummy = new[] { 1 } })));
         }
 
         [Test]

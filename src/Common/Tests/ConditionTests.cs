@@ -236,7 +236,7 @@ namespace DotLiquid.Tests
                 AssertEvaluatesTrue("16", "is_multiple_of", "4");
                 AssertEvaluatesFalse("16", "is_multiple_of", "5");
 
-                AssertError("16", "is_multiple_of", "4", typeof(ArgumentException));
+                AssertError("16", "ismultipleof", "4", typeof(ArgumentException));
 
                 //Run tests through the template to verify that capitalization rules are followed through template parsing
                 Helper.AssertTemplateResult(" TRUE ", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
@@ -246,7 +246,7 @@ namespace DotLiquid.Tests
                 //Helper.AssertTemplateResult("", "{% if 14 is_multiple_of 4 %} TRUE {% endif %}");
                 //Helper.AssertTemplateResult(" TRUE ", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
                 //Helper.AssertTemplateResult("", "{% if 14 is_multiple_of 4 %} TRUE {% endif %}");
-                Helper.AssertTemplateResult("Liquid error: Unknown operator is_multiple_of", "{% if 16 is_multiple_of 4 %} TRUE {% endif %}");
+                Helper.AssertTemplateResult("Liquid error: Unknown operator isMultipleOf", "{% if 16 isMultipleOf 4 %} TRUE {% endif %}");
             }
             finally
             {

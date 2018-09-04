@@ -105,7 +105,7 @@ namespace DotLiquid.Tests
         {
             private int _count;
 
-            public int Count()
+            public int count()
             {
                 return ++_count;
             }
@@ -345,7 +345,7 @@ namespace DotLiquid.Tests
             context.AddFilters(new[] { typeof(TestFilters) });
             var methodsAfter = context.Strainer.Methods.Select(mi => mi.Name).ToList();
             CollectionAssert.AreEqual(
-                methodsBefore.Concat(new[] { "Hi" }).OrderBy(s => s).ToList(),
+                methodsBefore.Concat(new[] { "hi" }).OrderBy(s => s).ToList(),
                 methodsAfter.OrderBy(s => s).ToList());
         }
 
@@ -573,7 +573,7 @@ namespace DotLiquid.Tests
         public void TestNestedContextFromWithinDrop()
         {
             _context.Merge(Hash.FromAnonymousObject(new { test = "123", vars = new { local = new ContextSensitiveDrop() } }));
-            Assert.AreEqual("123", _context["vars.local.Test"]);
+            Assert.AreEqual("123", _context["vars.local.test"]);
         }
 
         [Test]
@@ -610,9 +610,9 @@ namespace DotLiquid.Tests
         {
             _context["counter"] = new CounterDrop();
 
-            Assert.AreEqual(1, _context["counter['Count']"]);
-            Assert.AreEqual(2, _context["counter['Count']"]);
-            Assert.AreEqual(3, _context["counter['Count']"]);
+            Assert.AreEqual(1, _context["counter['count']"]);
+            Assert.AreEqual(2, _context["counter['count']"]);
+            Assert.AreEqual(3, _context["counter['count']"]);
         }
 
         [Test]
