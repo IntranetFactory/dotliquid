@@ -12,12 +12,12 @@ namespace DotLiquid.Tests
 
         private static class MoneyFilter
         {
-            public static string Money(object input)
+            public static string money(object input)
             {
                 return string.Format(" {0:d}$ ", input);
             }
 
-            public static string MoneyWithUnderscore(object input)
+            public static string money_with_underscore(object input)
             {
                 return string.Format(" {0:d}$ ", input);
             }
@@ -25,7 +25,7 @@ namespace DotLiquid.Tests
 
         private static class CanadianMoneyFilter
         {
-            public static string Money(object input)
+            public static string money(object input)
             {
                 return string.Format(" {0:d}$ CAD ", input);
             }
@@ -33,12 +33,12 @@ namespace DotLiquid.Tests
 
         private static class FiltersWithArguments
         {
-            public static string Adjust(int input, int offset = 10)
+            public static string adjust(int input, int offset = 10)
             {
                 return string.Format("[{0:d}]", input + offset);
             }
 
-            public static string AddSub(int input, int plus, int minus = 20)
+            public static string add_sub(int input, int plus, int minus = 20)
             {
                 return string.Format("[{0:d}]", input + plus - minus);
             }
@@ -46,7 +46,7 @@ namespace DotLiquid.Tests
 
         private static class FiltersWithMulitpleMethodSignatures
         {
-            public static string Concat(string one, string two)
+            public static string concat(string one, string two)
             {
                 return string.Concat(one, two);
             }
@@ -59,12 +59,12 @@ namespace DotLiquid.Tests
 
         private static class FiltersWithMultipleMethodSignaturesAndContextParam
         {
-            public static string ConcatWithContext(Context context, string one, string two)
+            public static string concat_with_context(Context context, string one, string two)
             {
                 return string.Concat(one, two);
             }
 
-            public static string ConcatWithContext(Context context, string one, string two, string three)
+            public static string concat_with_context(Context context, string one, string two, string three)
             {
                 return string.Concat(one, two, three);
             }
@@ -72,7 +72,7 @@ namespace DotLiquid.Tests
 
         private static class ContextFilters
         {
-            public static string BankStatement(Context context, object input)
+            public static string bank_statement(Context context, object input)
             {
                 return string.Format(" " + context["name"] + " has {0:d}$ ", input);
             }
@@ -108,7 +108,7 @@ namespace DotLiquid.Tests
         {
             _context["var"] = 1000;
             _context.AddFilters(typeof(MoneyFilter));
-            Assert.AreEqual(" 1000$ ", new Variable("var | MoneyWithUnderscore").Render(_context));
+            Assert.AreEqual(" 1000$ ", new Variable("var | money_with_underscore").Render(_context));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace DotLiquid.Tests
         {
             _context["var"] = 1000;
             _context.AddFilters(typeof(FiltersWithArguments));
-            Assert.AreEqual("[1150]", new Variable("var | AddSub: 200, 50").Render(_context));
+            Assert.AreEqual("[1150]", new Variable("var | add_sub: 200, 50").Render(_context));
         }
 
         [Test]
@@ -157,8 +157,8 @@ namespace DotLiquid.Tests
         {
             Template.RegisterFilter(typeof(FiltersWithMultipleMethodSignaturesAndContextParam));
 
-            Assert.AreEqual("AB", Template.Parse("{{'A' | ConcatWithContext : 'B'}}").Render());
-            Assert.AreEqual("ABC", Template.Parse("{{'A' | ConcatWithContext : 'B', 'C'}}").Render());
+            Assert.AreEqual("AB", Template.Parse("{{'A' | concat_with_context : 'B'}}").Render());
+            Assert.AreEqual("ABC", Template.Parse("{{'A' | concat_with_context : 'B', 'C'}}").Render());
         }
 
         /*/// <summary>
@@ -221,7 +221,7 @@ namespace DotLiquid.Tests
         public void TestStripHtml()
         {
             _context["var"] = "<b>bla blub</a>";
-            Assert.AreEqual("bla blub", new Variable("var | StripHtml").Render(_context));
+            Assert.AreEqual("bla blub", new Variable("var | strip_html").Render(_context));
         }
 
         [Test]
@@ -259,7 +259,7 @@ namespace DotLiquid.Tests
             _context["var"] = 1000;
             _context["name"] = "King Kong";
             _context.AddFilters(typeof(ContextFilters));
-            Assert.AreEqual(" King Kong has 1000$ ", new Variable("var | BankStatement").Render(_context));
+            Assert.AreEqual(" King Kong has 1000$ ", new Variable("var | bank_statement").Render(_context));
         }
     }
 }

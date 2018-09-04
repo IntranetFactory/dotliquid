@@ -11,32 +11,32 @@ namespace DotLiquid.Tests
     {
         private static class FunnyFilter
         {
-            public static string MakeFunny(string input)
+            public static string make_funny(string input)
             {
                 return "LOL";
             }
 
-            public static string CiteFunny(string input)
+            public static string cite_funny(string input)
             {
                 return "LOL: " + input;
             }
 
-            public static string AddSmiley(string input, string smiley = ":-)")
+            public static string add_smiley(string input, string smiley = ":-)")
             {
                 return input + " " + smiley;
             }
 
-            public static string AddTag(string input, string tag = "p", string id = "foo")
+            public static string add_tag(string input, string tag = "p", string id = "foo")
             {
                 return string.Format("<{0} id=\"{1}\">{2}</{0}>", tag, id, input);
             }
 
-            public static string Paragraph(string input)
+            public static string paragraph(string input)
             {
                 return string.Format("<p>{0}</p>", input);
             }
 
-            public static string LinkTo(string name, string url)
+            public static string link_to(string name, string url)
             {
                 return string.Format("<a href=\"{0}\">{1}</a>", url, name);
             }
@@ -201,55 +201,55 @@ namespace DotLiquid.Tests
         [Test]
         public void TestVariablePiping()
         {
-            Assert.AreEqual(" LOL ", Template.Parse(" {{ car.gm | MakeFunny }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" LOL ", Template.Parse(" {{ car.gm | make_funny }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithInput()
         {
-            Assert.AreEqual(" LOL: bad ", Template.Parse(" {{ car.gm | CiteFunny }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" LOL: bad ", Template.Parse(" {{ car.gm | cite_funny }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithArgs()
         {
-            Assert.AreEqual(" bad :-( ", Template.Parse(" {{ car.gm | AddSmiley : ':-(' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" bad :-( ", Template.Parse(" {{ car.gm | add_smiley : ':-(' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithNoArgs()
         {
-            Assert.AreEqual(" bad :-) ", Template.Parse(" {{ car.gm | AddSmiley }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" bad :-) ", Template.Parse(" {{ car.gm | add_smiley }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestMultipleVariablePipingWithArgs()
         {
-            Assert.AreEqual(" bad :-( :-( ", Template.Parse(" {{ car.gm | AddSmiley : ':-(' | AddSmiley : ':-(' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" bad :-( :-( ", Template.Parse(" {{ car.gm | add_smiley : ':-(' | add_smiley : ':-(' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithArgs2()
         {
-            Assert.AreEqual(" <span id=\"bar\">bad</span> ", Template.Parse(" {{ car.gm | AddTag : 'span', 'bar' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <span id=\"bar\">bad</span> ", Template.Parse(" {{ car.gm | add_tag : 'span', 'bar' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestVariablePipingWithWithVariableArgs()
         {
-            Assert.AreEqual(" <span id=\"good\">bad</span> ", Template.Parse(" {{ car.gm | AddTag : 'span', car.bmw }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <span id=\"good\">bad</span> ", Template.Parse(" {{ car.gm | add_tag : 'span', car.bmw }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestMultiplePipings()
         {
-            Assert.AreEqual(" <p>LOL: bmw</p> ", Template.Parse(" {{ best_cars | CiteFunny | paragraph }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <p>LOL: bmw</p> ", Template.Parse(" {{ best_cars | cite_funny | paragraph }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
 
         [Test]
         public void TestLinkTo()
         {
-            Assert.AreEqual(" <a href=\"http://typo.leetsoft.com\">Typo</a> ", Template.Parse(" {{ 'Typo' | LinkTo: 'http://typo.leetsoft.com' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
+            Assert.AreEqual(" <a href=\"http://typo.leetsoft.com\">Typo</a> ", Template.Parse(" {{ 'Typo' | link_to: 'http://typo.leetsoft.com' }} ").Render(new RenderParameters(CultureInfo.InvariantCulture) { LocalVariables = _assigns, Filters = new[] { typeof(FunnyFilter) } }));
         }
     }
 }

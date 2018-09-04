@@ -23,17 +23,17 @@ namespace DotLiquid.Tests
 
         internal class ContextDrop : Drop
         {
-            public int Scopes
+            public int scopes
             {
                 get { return Context.Scopes.Count; }
             }
 
-            public IEnumerable<int> ScopesAsArray
+            public IEnumerable<int> scopes_as_array
             {
                 get { return Enumerable.Range(1, Context.Scopes.Count); }
             }
 
-            public int LoopPos
+            public int loop_pos
             {
                 get { return (int)Context["forloop.index"]; }
             }
@@ -53,12 +53,12 @@ namespace DotLiquid.Tests
         {
             internal class TextDrop : Drop
             {
-                public string[] Array
+                public string[] array
                 {
                     get { return new[] { "text1", "text2" }; }
                 }
 
-                public string Text
+                public string text
                 {
                     get { return "text1"; }
                 }
@@ -139,7 +139,7 @@ namespace DotLiquid.Tests
         {
             public static string ProductText(object input)
             {
-                return ((ProductDrop)input).Texts().Text;
+                return ((ProductDrop)input).Texts().text;
             }
         }
 
@@ -251,15 +251,18 @@ namespace DotLiquid.Tests
         [Test]
         public void TestScopeFromTags()
         {
-            Assert.AreEqual("1", Template.Parse("{% for i in context.ScopesAsArray %}{{i}}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
-            Assert.AreEqual("12", Template.Parse("{%for a in dummy%}{% for i in context.ScopesAsArray %}{{i}}{% endfor %}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
-            Assert.AreEqual("123", Template.Parse("{%for a in dummy%}{%for a in dummy%}{% for i in context.ScopesAsArray %}{{i}}{% endfor %}{% endfor %}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
+            Assert.AreEqual("1", Template.Parse("{% for i in context.scopes_as_array %}{{i}}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
+            Assert.AreEqual("12", Template.Parse("{%for a in dummy%}{% for i in context.scopes_as_array %}{{i}}{% endfor %}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
+            Assert.AreEqual("123", Template.Parse("{%for a in dummy%}{%for a in dummy%}{% for i in context.scopes_as_array %}{{i}}{% endfor %}{% endfor %}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1 } })));
         }
 
         [Test]
         public void TestAccessContextFromDrop()
         {
-            Assert.AreEqual("123", Template.Parse("{% for a in dummy %}{{ context.LoopPos }}{% endfor %}").Render(Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1, 2, 3 } })));
+            Hash hash = Hash.FromAnonymousObject(new { context = new ContextDrop(), dummy = new[] { 1, 2, 3 } });
+            Template template = Template.Parse("{% for a in dummy %}{{ context.loop_pos }}{% endfor %}");
+            string result = template.Render(hash);
+            Assert.AreEqual("123", result);
         }
 
         [Test]

@@ -16,7 +16,7 @@ namespace DotLiquid.Tests
 
         private static class TestFilters
         {
-            public static string Hi(string output)
+            public static string hi(string output)
             {
                 return output + " hi!";
             }
@@ -24,7 +24,7 @@ namespace DotLiquid.Tests
 
         private static class TestContextFilters
         {
-            public static string Hi(Context context, string output)
+            public static string hi(Context context, string output)
             {
                 return output + " hi from " + context["name"] + "!";
             }
@@ -32,7 +32,7 @@ namespace DotLiquid.Tests
 
         private static class GlobalFilters
         {
-            public static string Notice(string output)
+            public static string notice(string output)
             {
                 return "Global " + output;
             }
@@ -40,7 +40,7 @@ namespace DotLiquid.Tests
 
         private static class LocalFilters
         {
-            public static string Notice(string output)
+            public static string notice(string output)
             {
                 return "Local " + output;
             }
@@ -56,12 +56,12 @@ namespace DotLiquid.Tests
 
         private class CentsDrop : Drop
         {
-            public object Amount
+            public object amount
             {
                 get { return new HundredCents(); }
             }
 
-            public bool NonZero
+            public bool non_zero
             {
                 get { return true; }
             }
@@ -69,7 +69,7 @@ namespace DotLiquid.Tests
 
         private class ContextSensitiveDrop : Drop
         {
-            public object Test()
+            public object test()
             {
                 return Context["test"];
             }
@@ -545,28 +545,28 @@ namespace DotLiquid.Tests
         public void TestCentsThroughDrop()
         {
             _context.Merge(Hash.FromAnonymousObject(new { cents = new CentsDrop() }));
-            Assert.AreEqual(100, _context["cents.Amount"]);
+            Assert.AreEqual(100, _context["cents.amount"]);
         }
 
         [Test]
         public void TestNestedCentsThroughDrop()
         {
             _context.Merge(Hash.FromAnonymousObject(new { vars = new { cents = new CentsDrop() } }));
-            Assert.AreEqual(100, _context["vars.cents.Amount"]);
+            Assert.AreEqual(100, _context["vars.cents.amount"]);
         }
 
         [Test]
         public void TestDropMethodsWithQuestionMarks()
         {
             _context.Merge(Hash.FromAnonymousObject(new { cents = new CentsDrop() }));
-            Assert.AreEqual(true, _context["cents.NonZero"]);
+            Assert.AreEqual(true, _context["cents.non_zero"]);
         }
 
         [Test]
         public void TestContextFromWithinDrop()
         {
             _context.Merge(Hash.FromAnonymousObject(new { test = "123", vars = new ContextSensitiveDrop() }));
-            Assert.AreEqual("123", _context["vars.Test"]);
+            Assert.AreEqual("123", _context["vars.test"]);
         }
 
         [Test]
@@ -589,10 +589,10 @@ namespace DotLiquid.Tests
         public void TestCentsThroughDropNestedly()
         {
             _context.Merge(Hash.FromAnonymousObject(new { cents = new { cents = new CentsDrop() } }));
-            Assert.AreEqual(100, _context["cents.cents.Amount"]);
+            Assert.AreEqual(100, _context["cents.cents.amount"]);
 
             _context.Merge(Hash.FromAnonymousObject(new { cents = new { cents = new { cents = new CentsDrop() } } }));
-            Assert.AreEqual(100, _context["cents.cents.cents.Amount"]);
+            Assert.AreEqual(100, _context["cents.cents.cents.amount"]);
         }
 
         [Test]
@@ -600,9 +600,9 @@ namespace DotLiquid.Tests
         {
             _context["counter"] = new CounterDrop();
 
-            Assert.AreEqual(1, _context["counter.Count"]);
-            Assert.AreEqual(2, _context["counter.Count"]);
-            Assert.AreEqual(3, _context["counter.Count"]);
+            Assert.AreEqual(1, _context["counter.count"]);
+            Assert.AreEqual(2, _context["counter.count"]);
+            Assert.AreEqual(3, _context["counter.count"]);
         }
 
         [Test]

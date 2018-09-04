@@ -9,17 +9,17 @@ namespace DotLiquid.Tests
     {
         private class ExceptionDrop : Drop
         {
-            public void ArgumentException()
+            public void argument_exception()
             {
                 throw new ArgumentException("argument exception");
             }
 
-            public void SyntaxException()
+            public void syntax_exception()
             {
                 throw new SyntaxException("syntax exception");
             }
 
-            public void InterruptException()
+            public void interrupt_exception()
             {
                 throw new InterruptException("interrupted");
             }
@@ -41,7 +41,7 @@ namespace DotLiquid.Tests
         public void TestArgumentException()
         {
             Template template = null;
-            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.ArgumentException }} "); });
+            Assert.DoesNotThrow(() => { template = Template.Parse(" {{ errors.argument_exception }} "); });
             string result = template.Render(Hash.FromAnonymousObject(new { errors = new ExceptionDrop() }));
             Assert.AreEqual(" Liquid error: argument exception ", result);
 
